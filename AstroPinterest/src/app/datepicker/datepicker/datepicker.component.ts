@@ -1,4 +1,4 @@
-import { Component, NgModule, OnInit } from '@angular/core';
+import { Component, EventEmitter, NgModule, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-datepicker',
@@ -9,6 +9,11 @@ export class DatepickerComponent implements OnInit {
 
   limitHistoryDate = new Date();
   todayDate = new Date();
+  @Output() newApodDateEvent = new EventEmitter<string>();
+
+  changeNewApodDate(value: string) {
+    this.newApodDateEvent.emit(value);
+  }
    
   constructor() {
     this.limitHistoryDate.setDate(this.limitHistoryDate.getDate() - 3650);
