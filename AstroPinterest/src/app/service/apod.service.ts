@@ -25,6 +25,7 @@ export class ApodService {
   randomApodUrl = 'api/get-random-apod';
   saveMyFavoriteApodUrl = "api/myfavorite";
   myFavoriteApodsUrl = "api/myfavorites";
+  deleteMyFavoriteUrl = "api/myfavorite";
 
   private handleError: HandleError;
   
@@ -82,6 +83,15 @@ export class ApodService {
       .pipe(
         catchError(this.handleError('saveMyFavoriteApod', apod))
       );
+  }
+
+  /* SAVE my favorite Apod */
+  deleteMyFavoriteApod(apod: Apod) {
+    const url = `${this.deleteMyFavoriteUrl}/${apod.date}`; // DELETE api/heroes/42
+    return this.http.delete(url, httpOptions)
+    .pipe(
+      catchError(this.handleError('deleteMyFavoriteApod'))
+    );
   }
 
 }

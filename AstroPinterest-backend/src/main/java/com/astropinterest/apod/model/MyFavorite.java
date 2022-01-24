@@ -18,7 +18,7 @@ import lombok.Data;
 @Table
 public class MyFavorite {
 
-    @Id
+    //@Id
     @GeneratedValue
     private int id;
 
@@ -28,8 +28,8 @@ public class MyFavorite {
     @Column
     private String copyright;     // "Jarmo RuuthTelescope LiveHeaven's Mirror Observatory"
 
-    @Column
     @Temporal(TemporalType.DATE)
+    @Id
     private Date date;          // "2022-01-17"
     
     @Lob

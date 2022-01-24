@@ -18,9 +18,10 @@ Source:
   </thead>
   <tbody>
       <tr *ngFor="let apod of apods">
-          <td style="vertical-align:top"><img width="100" height="100" src={{apod.url}}></td>
+          <td style="vertical-align:top"><div (click)="changeCurrentApod(apod)"><img width="100" height="100" src={{apod.url}}></div></td>
           <td style="vertical-align:top">{{apod.date}}</td>
           <td><p>{{apod.explanation}}</p></td>
+          <td><button mat-button color="primary" (click)="deleteMyFavorite()">Delete</button></td>
       </tr>
   </tbody>
 </table>
