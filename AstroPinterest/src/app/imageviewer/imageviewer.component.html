@@ -1,0 +1,26 @@
+Source:
+<mat-radio-group aria-label="Select an image source">
+    <mat-radio-button value="1" [checked]="true" (click)="changeApodSource(0)">NASA APOD</mat-radio-button>
+    <mat-radio-button value="2" (click)="changeApodSource(1)">My favorites</mat-radio-button>
+</mat-radio-group>
+
+<div><app-datepicker (newApodDateEvent)="setCurrentApodDate($event)"></app-datepicker></div>
+<div>
+  <img width="600" height="600"src={{apod.url}}>
+</div>
+<div><button mat-button color="primary" (click)="saveMyFavorite()">Save into my favorites</button></div>
+<hr>
+<table>
+  <thead>
+    <th>Apod</th>
+    <th>Date</th>
+    <th>Explanation</th>
+  </thead>
+  <tbody>
+      <tr *ngFor="let apod of apods">
+          <td style="vertical-align:top"><img width="100" height="100" src={{apod.url}}></td>
+          <td style="vertical-align:top">{{apod.date}}</td>
+          <td><p>{{apod.explanation}}</p></td>
+      </tr>
+  </tbody>
+</table>

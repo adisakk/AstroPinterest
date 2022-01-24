@@ -1,7 +1,8 @@
 Date:
 <mat-form-field>
     <input matInput [matDatepicker]="picker" placeholder="Choose a date"
-    [min]="limitHistoryDate" [max]="todayDate">
+    [min]="limitHistoryDate" [max]="todayDate" 
+    (dateChange)="changeNewApodDate(newApodDate.value)" #newApodDate>
     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
     <mat-datepicker #picker></mat-datepicker>
 </mat-form-field>

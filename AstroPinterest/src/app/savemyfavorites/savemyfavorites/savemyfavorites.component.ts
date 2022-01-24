@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-savemyfavorites',
@@ -8,6 +8,12 @@ import { Component, OnInit } from '@angular/core';
 export class SavemyfavoritesComponent implements OnInit {
 
   constructor() { }
+
+  @Output() clickFunctionCalled = new EventEmitter<any>();
+  callFunction() {
+    console.log("callFunction");
+    this.clickFunctionCalled.emit();   
+  }
 
   ngOnInit(): void {
   }
