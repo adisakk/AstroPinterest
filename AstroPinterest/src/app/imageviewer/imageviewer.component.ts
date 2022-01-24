@@ -57,14 +57,28 @@ export class ImageviewerComponent implements OnInit {
     this.displayMessage("Saved!")
   }
 
+  deleteMyFavorite(): void {
+    this.apodService.deleteMyFavoriteApod(this.apod).subscribe();
+    this.updateCurrentApods();
+    this.displayMessage("Deleted!")
+  }
+
   displayMessage(str: string){
     alert(str);
   }
 
   changeApodSource(value: any){
     this.apodSource = value;
+    this.updateCurrentApods();
+  }
+
+  private updateCurrentApods() {
     this.apodService.getMyFovoriteApods(6)
       .subscribe((apods: Apod[]) => (this.apods = apods));
+  }
+
+  changeCurrentApod(apod: Apod){
+    this.apod = apod;
   }
 
 }
