@@ -4,10 +4,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import com.astropinterest.apod.model.MyFavorite;
+import com.astropinterest.apod.entity.MyFavorite;
 import com.astropinterest.apod.repository.MyFavoriteRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -20,6 +21,7 @@ public class MyFavoriteService {
      * Getting all MyFavorite records
      * @return
      */
+    @Cacheable("all-myfavorites")
     public List<MyFavorite> getAllMyFavorites() {
         List<MyFavorite> myFavorites = new ArrayList<MyFavorite>();
         myFavoriteRepository.findAll().forEach(myFavorite -> myFavorites.add(myFavorite));
@@ -32,6 +34,7 @@ public class MyFavoriteService {
      * @param enddate
      * @return List of MyFavorites
      */
+    @Cacheable("myfavorites-bydate-range")
     public List<MyFavorite> getMyFavoriteByDateRange(Date startdate, Date enddate) {
         List<MyFavorite> myFavorites = new ArrayList<MyFavorite>();
         myFavoriteRepository.getAllBetweenDates(startdate, enddate)
@@ -44,7 +47,8 @@ public class MyFavoriteService {
      * @param id
      * @return MyFavorite
      */
-    public MyFavorite getMyFavoriteById(int id) {
+    @Cacheable("myfavorite-id")
+    public MyFavorite getMyFavoriteById(Date id) {
         return myFavoriteRepository.findById(id).get();
     }
 
@@ -60,7 +64,7 @@ public class MyFavoriteService {
      * Deleting a specific MyFavorite record.
      * @param id
      */
-    public void delete(int id) 
+    public void delete(Date id) 
     {
         myFavoriteRepository.deleteById(id);
     }
