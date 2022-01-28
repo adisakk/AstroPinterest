@@ -21,7 +21,7 @@ public class MyFavoriteService {
      * Getting all MyFavorite records
      * @return
      */
-    @Cacheable("all-myfavorites")
+    //@Cacheable("all-myfavorites")
     public List<MyFavorite> getAllMyFavorites() {
         List<MyFavorite> myFavorites = new ArrayList<MyFavorite>();
         myFavoriteRepository.findAll().forEach(myFavorite -> myFavorites.add(myFavorite));

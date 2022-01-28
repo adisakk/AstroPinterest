@@ -6,5 +6,5 @@ export class Apod {
     media_type: string | undefined;
     service_version: string | undefined;
     title: string | undefined;
-    url: string | undefined;
+    url = '';
 }

@@ -34,7 +34,7 @@ public class ApodController {
 	private Apod getNasaApodByDate(String date){
 		ResponseEntity<Apod> response = restTemplate.getForEntity(apodUrl+date, Apod.class);
 		Apod apod = response.getBody();
-		log.debug(apod.toString());
+		log.info(apod.toString());
 		return apod;
 	}
 	/**
@@ -67,7 +67,7 @@ public class ApodController {
 	private Apod[] searchNasaApods(String params){
 		ResponseEntity<Apod[]> response = restTemplate.getForEntity(apodUrl+params, Apod[].class);
 		Apod[] apods = response.getBody();
-		log.debug(apods.toString());
+		log.info(apods.toString());
 		return apods;
 	}
 

@@ -16,10 +16,12 @@ import { MatInputModule} from '@angular/material/input';
 import { SourceselectorComponent } from './sourceselector/sourceselector/sourceselector.component';
 import { MatRadioModule} from '@angular/material/radio';
 import { ImageviewerComponent } from './imageviewer/imageviewer.component';
+import {YouTubePlayerModule} from '@angular/youtube-player';
 import { SavemyfavoritesComponent } from './savemyfavorites/savemyfavorites/savemyfavorites.component';
 import { ConfigComponent } from './config/config.component';
 import { HttpErrorHandler } from './http-error-handler.service';
 import { MessageService } from './message.service';
+import { VideoPlayerComponent } from './video-player/video-player.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +31,7 @@ import { MessageService } from './message.service';
     ImageviewerComponent,
     SavemyfavoritesComponent,
     ConfigComponent,
+    VideoPlayerComponent,
   ],
   imports: [
     BrowserModule,
@@ -41,6 +44,7 @@ import { MessageService } from './message.service';
     MatNativeDateModule,
     MatInputModule,
     MatRadioModule,
+    YouTubePlayerModule,
   ],
   providers: [
     HttpErrorHandler,

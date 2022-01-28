@@ -7,7 +7,7 @@ import { catchError } from 'rxjs/operators';
 
 import { HttpErrorHandler, HandleError } from '../http-error-handler.service';
 
-import { Apod } from '../model/Apod';
+import { Apod } from '../model/apod';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -86,8 +86,8 @@ export class ApodService {
   }
 
   /* SAVE my favorite Apod */
-  deleteMyFavoriteApod(apod: Apod) {
-    const url = `${this.deleteMyFavoriteUrl}/${apod.date}`; // DELETE api/heroes/42
+  deleteMyFavoriteApod(date: any) {
+    const url = `${this.deleteMyFavoriteUrl}/${date}`;
     return this.http.delete(url, httpOptions)
     .pipe(
       catchError(this.handleError('deleteMyFavoriteApod'))
