@@ -4,7 +4,11 @@ Source:
     <mat-radio-button value="1" (click)="changeApodSource('MyFav')"> My favorites </mat-radio-button>
 </mat-radio-group>
 
-<div><app-datepicker (newApodDateEvent)="setCurrentApodDate($event)"></app-datepicker></div>
+<div *ngIf="showApodDatePicker">Date: <app-datepicker (newApodDateEvent)="setCurrentApodDate($event)"></app-datepicker></div>
+<div *ngIf="!showApodDatePicker">
+  Start date: <app-datepicker (newApodDateEvent)="setMyFavoriteStartdate($event)"></app-datepicker>
+  End date:<app-datepicker (newApodDateEvent)="setMyFavoriteEnddate($event)"></app-datepicker>
+</div>
 
 <div *ngIf="showMainMediaPanel">
   <div class="row">

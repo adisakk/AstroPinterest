@@ -24,14 +24,16 @@ export class ImageviewerComponent implements OnInit {
   thumbnailApodsPerRow = 5; // for display in table row
   thumbnailApodsTotal = 10;
   currentApodDate = "";
-  apodSource = "NASA";
-  currentApodSource = 0; //0: NASA, 1: MyFavorites
+  currentApodSource = "NASA";
   showMainMediaPanel = true;
   showMainImage = true;
   showMainVideo = false;
   currentVideoId = "";
   showSaveMyFavButton = true;
   showDeleteMyFavButton = false;
+  showApodDatePicker = true;
+  myFavoriteStartdate = "";
+  myFavoriteEnddate = "";
   
 
   constructor(private domSanitizer:DomSanitizer, private apodService: ApodService) {
@@ -43,11 +45,7 @@ export class ImageviewerComponent implements OnInit {
   }
 
   setCurrentApodDate(newDate: string) {
-    var m = new Date(newDate);
-    this.currentApodDate = m.getUTCFullYear() + "-" 
-    + ("0" + (m.getUTCMonth()+1)).slice(-2) + "-" 
-    + ("0" + m.getUTCDate()).slice(-2)
-    
+    this.currentApodDate = this.getApodDateFormat(newDate);
     this.getPreviousApodByDate(this.currentApodDate);
   }
   
@@ -77,7 +75,7 @@ export class ImageviewerComponent implements OnInit {
 
   saveMyFavorite(): void {
     this.apodService.saveMyFavoriteApod(this.apod).subscribe(() => {
-      if(this.apodSource == "MyFav")
+      if(this.currentApodSource == "MyFav")
         this.refreshMyFavorites();
       this.displayMessage("Saved!");
     });
@@ -91,25 +89,47 @@ export class ImageviewerComponent implements OnInit {
     });
   }
 
+  setMyFavoriteStartdate(newDate: string) {
+    this.myFavoriteStartdate = this.getApodDateFormat(newDate);
+    this.refreshMyFavoriteThumbnails();
+  }
+
+  setMyFavoriteEnddate(newDate: string) {
+    this.myFavoriteEnddate = this.getApodDateFormat(newDate);
+    this.refreshMyFavoriteThumbnails();
+  }
+
   changeCurrentApod(apod: Apod){
     this.apod = apod;
     this.updateMainMediaPanel();
   }
 
   changeApodSource(source: any){
-    this.apodSource = source;
+    this.currentApodSource = source;
 
-    if(this.apodSource == "NASA") {
+    if(this.currentApodSource == "NASA") {
       this.refreshApod();
       this.updateMainMediaPanel();
       this.showSaveMyFavButton = true;
       this.showDeleteMyFavButton = false;
+      this.showApodDatePicker = true;
     }
     else {
       this.showMainMediaPanel = false;
       this.refreshMyFavorites();
       this.showSaveMyFavButton = false;
       this.showDeleteMyFavButton = true;
+      this.showApodDatePicker = false;
+    }
+  }
+
+  private refreshMyFavoriteThumbnails(){
+    if(this.myFavoriteStartdate != "" && this.myFavoriteEnddate != ""){
+      this.apodService.getMyFovoriteApodsByDateRange(
+        this.myFavoriteStartdate, this.myFavoriteEnddate).subscribe((apods: Apod[]) => {
+          this.apods = apods;
+          this.refreshThumbnailApods();
+      });
     }
   }
 
@@ -170,6 +190,13 @@ export class ImageviewerComponent implements OnInit {
     }
 
     this.currentVideoId = id;
+  }
+
+  private getApodDateFormat(date: string){
+    var m = new Date(date);
+    return m.getUTCFullYear() + "-" 
+    + ("0" + (m.getUTCMonth()+1)).slice(-2) + "-" 
+    + ("0" + m.getUTCDate()).slice(-2);
   }
 
   private displayMessage(str: string){

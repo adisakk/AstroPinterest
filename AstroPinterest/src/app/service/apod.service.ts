@@ -55,11 +55,20 @@ export class ApodService {
   }
 
    /** GET my favorite Apod from db server by specific date*/
-   getMyFovoriteApods(term: any): Observable<Apod[]> {
-    
+   getMyFovoriteApods(limit: any): Observable<Apod[]> {
+    //TODO implement result limitation.
     return this.http.get<Apod[]>(this.myFavoriteApodsUrl, httpOptions)
       .pipe(
         catchError(this.handleError<Apod[]>('getMyFovoriteApods', []))
+      );
+  }
+
+  /** GET my favorite Apod from db server by specific date*/
+  getMyFovoriteApodsByDateRange(startdate: any, enddate: string): Observable<Apod[]> {
+    const url = this.myFavoriteApodsUrl+ "/"+startdate+ "/"+enddate;
+    return this.http.get<Apod[]>(url, httpOptions)
+      .pipe(
+        catchError(this.handleError<Apod[]>('getMyFovoriteApodsByDateRange', []))
       );
   }
 
