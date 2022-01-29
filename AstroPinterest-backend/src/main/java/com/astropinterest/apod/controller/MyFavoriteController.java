@@ -3,7 +3,7 @@ package com.astropinterest.apod.controller;
 import java.util.Date;
 import java.util.List;
 
-import com.astropinterest.apod.model.MyFavorite;
+import com.astropinterest.apod.entity.MyFavorite;
 import com.astropinterest.apod.service.MyFavoriteService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,21 +39,23 @@ public class MyFavoriteController {
 
     /**
      * The GET mapping that retrieves the detail of a specific MyFavorite
-     * @param id
+     * @param date
      * @return
      */
-    @GetMapping("/myfavorite/{id}")
-    private MyFavorite getMyFavorite(@PathVariable("id") int id) {
-        return myFavoriteService.getMyFavoriteById(id);
+    @GetMapping("/myfavorite/{date}")
+    private MyFavorite getMyFavorite(
+        @PathVariable("date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date date) {
+        return myFavoriteService.getMyFavoriteById(date);
     }
  
     /**
      * The DELETE mapping that deletes a specific MyFavorite
-     * @param id
+     * @param date
      */
-    @DeleteMapping("/myfavorite/{id}")
-    private void deleteMyFavorite(@PathVariable("id") int id) {
-        myFavoriteService.delete(id);
+    @DeleteMapping("/myfavorite/{date}")
+    private void deleteMyFavorite(
+        @PathVariable("date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date date) {
+        myFavoriteService.delete(date);
     }
     
     /**
@@ -62,8 +64,8 @@ public class MyFavoriteController {
      * @return
      */
     @PostMapping("/myfavorite")
-    private int saveMyFavorite(@RequestBody MyFavorite myFavorite) {
+    private Date saveMyFavorite(@RequestBody MyFavorite myFavorite) {
         myFavoriteService.saveOrUpdate(myFavorite);
-        return myFavorite.getId();
+        return myFavorite.getDate();
     }
 }

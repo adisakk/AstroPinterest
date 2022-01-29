@@ -6,6 +6,7 @@ import com.astropinterest.apod.model.Apod;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +18,7 @@ import org.springframework.web.client.RestTemplate;
 public class ApodController {
 
 	private static final Logger log = LoggerFactory.getLogger(AstroPinterestRestApplication.class);
-	private static final String apodUrl = "https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY";
+	private static final String apodUrl = "https://api.nasa.gov/planetary/apod?api_key=WO0b5EeSiSwJuCwW9dC0puNzkWthViPT40dSNsr5";
 	//private static final String apodUrl = "https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY&start_date=2017-07-08&end_date=2017-07-10";
 
 	@Autowired
@@ -29,16 +30,18 @@ public class ApodController {
 	 * @param date A string of date of image.
 	 * @return Apod.
 	 */
+	@Cacheable("nasa-apod-bydate")
 	private Apod getNasaApodByDate(String date){
 		ResponseEntity<Apod> response = restTemplate.getForEntity(apodUrl+date, Apod.class);
 		Apod apod = response.getBody();
-		log.debug(apod.toString());
+		log.info(apod.toString());
 		return apod;
 	}
 	/**
 	 * Get APOD from NASA
 	 * @return The APOD of current date.
 	 */
+	@Cacheable("apod")
 	@GetMapping("/get-apod")
 	public Apod getApod(){
 		return getNasaApodByDate("");
@@ -49,6 +52,7 @@ public class ApodController {
 	 * @param date A string of date of image.
 	 * @return Apod.
 	 */
+	@Cacheable("apod-bydate")
 	@GetMapping("/get-apod-bydate")
 	public Apod getApodByDate(String date){
 		return getNasaApodByDate("&date="+date);
@@ -59,10 +63,11 @@ public class ApodController {
 	 * @param params date, date range, count.
 	 * @return Apod[], an array of Apod.
 	 */
+	@Cacheable("search-nasa-apod")
 	private Apod[] searchNasaApods(String params){
 		ResponseEntity<Apod[]> response = restTemplate.getForEntity(apodUrl+params, Apod[].class);
 		Apod[] apods = response.getBody();
-		log.debug(apods.toString());
+		log.info(apods.toString());
 		return apods;
 	}
 
@@ -72,6 +77,7 @@ public class ApodController {
 	 * @param enddate A string in YYYY-MM-DD format indicating the end of a date range.
 	 * @return Apod[], All APODs in the given range.
 	 */
+	@Cacheable("apod-bydate-range")
 	@GetMapping("/get-apod-bydate-range")
 	public Apod[] getApodByDateRange(String startdate, String enddate){
 		return searchNasaApods("&start_date="+startdate+"&end_date="+enddate);
@@ -82,6 +88,7 @@ public class ApodController {
 	 * @param count A positive integer, no greater than 100.
 	 * @return Apod[], The randomly chosen APOds.
 	 */
+	@Cacheable("random-apod")
 	@GetMapping("/get-random-apod")
 	public Apod[] getRandomApod(int count){
 		return searchNasaApods("&count="+count);

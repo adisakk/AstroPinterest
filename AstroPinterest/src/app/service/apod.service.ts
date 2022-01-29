@@ -7,7 +7,7 @@ import { catchError } from 'rxjs/operators';
 
 import { HttpErrorHandler, HandleError } from '../http-error-handler.service';
 
-import { Apod } from '../model/Apod';
+import { Apod } from '../model/apod';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -55,11 +55,20 @@ export class ApodService {
   }
 
    /** GET my favorite Apod from db server by specific date*/
-   getMyFovoriteApods(term: any): Observable<Apod[]> {
-    
+   getMyFovoriteApods(limit: any): Observable<Apod[]> {
+    //TODO implement result limitation.
     return this.http.get<Apod[]>(this.myFavoriteApodsUrl, httpOptions)
       .pipe(
         catchError(this.handleError<Apod[]>('getMyFovoriteApods', []))
+      );
+  }
+
+  /** GET my favorite Apod from db server by specific date*/
+  getMyFovoriteApodsByDateRange(startdate: any, enddate: string): Observable<Apod[]> {
+    const url = this.myFavoriteApodsUrl+ "/"+startdate+ "/"+enddate;
+    return this.http.get<Apod[]>(url, httpOptions)
+      .pipe(
+        catchError(this.handleError<Apod[]>('getMyFovoriteApodsByDateRange', []))
       );
   }
 
@@ -86,8 +95,8 @@ export class ApodService {
   }
 
   /* SAVE my favorite Apod */
-  deleteMyFavoriteApod(apod: Apod) {
-    const url = `${this.deleteMyFavoriteUrl}/${apod.date}`; // DELETE api/heroes/42
+  deleteMyFavoriteApod(date: any) {
+    const url = `${this.deleteMyFavoriteUrl}/${date}`;
     return this.http.delete(url, httpOptions)
     .pipe(
       catchError(this.handleError('deleteMyFavoriteApod'))
